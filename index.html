@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de XML</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6" style="margin: 0 auto">
+                <h1>Gerador de XML</h1>
+                <div class="row" style="margin-top: 10px">
+                    <div class="col-md-4">
+                        <label>Número da NF:</label>
+                        <input type="number" class="form-control" id="numeroNF" />
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 10px">
+                    <div class="col-md-6">
+                        <label>CNPJ do fornecedor:</label>
+                        <input type="text" class="form-control" id="cnpjFornecedor" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>CNPJ do estabelecimento:</label>
+                        <input type="text" class="form-control" id="cnpjEstabelecimento" />
+                    </div>
+                </div>
+                <!-- <div class="row" style="margin-top: 10px">
+                    <div class="col-md-4">
+                        <label>Número de itens:</label>
+                        <input type="number" class="form-control" id="numeroItens" />
+                    </div>
+                </div> -->
+                <div class="row" style="margin-top: 10px">
+                    <div class="col-md-6">
+                        <button class="btn btn-primary" onclick="gerar()">Bota pra gerar</button>
+                        <a href="aux.xml" id="download" style="display: none;"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+    <script>
+        function gerar() {
+            const numeroNF = $('#numeroNF').val();
+            const cnpjFornecedor = $('#cnpjFornecedor').val();
+            const cnpjEstabelecimento = $('#cnpjEstabelecimento').val();
+            const numeroItens = $('#numeroItens').val();
+            var numeroDanfe = "";
+
+            if(!numeroNF || !cnpjEstabelecimento || !cnpjFornecedor) {
+                alert("Preencha todos os campos");
+                return;
+            }
+
+            for(var i = 0; i < 44-numeroNF.length; i++) {
+                numeroDanfe += Math.floor((Math.random() * 10));
+            }
+            numeroDanfe += numeroNF;
+
+            
+            const XMLString = `<?xml version="1.0" encoding="UTF-8"?>
+<NFe xmlns="http://www.portalfiscal.inf.br/nfe">
+<infNFe versao="4.00" Id="NFe${numeroDanfe}">
+<ide>
+    <cUF>23</cUF>
+    <cNF>${numeroNF}</cNF>
+    <natOp>Venda de Producao do Estabelecimento</natOp>
+    <mod>55</mod>
+    <serie>11</serie>
+    <nNF>1212</nNF>
+    <dhEmi>2020-10-03T15:00:40-03:00</dhEmi>
+    <dhSaiEnt>2020-10-03T15:00:40-03:00</dhSaiEnt>
+    <tpNF>1</tpNF>
+    <idDest>1</idDest>
+    <cMunFG>2304400</cMunFG>
+    <tpImp>1</tpImp>
+    <tpEmis>1</tpEmis>
+    <cDV>5</cDV>
+    <tpAmb>1</tpAmb>
+    <finNFe>1</finNFe>
+    <indFinal>0</indFinal>
+    <indPres>1</indPres>
+    <procEmi>0</procEmi>
+    <verProc>Taylor 2.5.1191.0/03</verProc>
+</ide>
+<emit>
+    <CNPJ>${cnpjFornecedor}</CNPJ>
+    <xNome>UF STORE INDUSTRIA E COMERCIO DE ROUPAS</xNome>
+    <xFant>UF STORE INDUSTRIA E COMERCIO DE ROUPAS</xFant>
+    <enderEmit>
+        <xLgr>AV MONS.TABOSA</xLgr>
+        <nro>452</nro>
+        <xBairro>CENTRO</xBairro>
+        <cMun>2304400</cMun>
+        <xMun>FORTALEZA</xMun>
+        <UF>CE</UF>
+        <CEP>60165010</CEP>
+        <cPais>1058</cPais>
+        <xPais>BRASIL</xPais>
+        <fone>8532190916</fone>
+    </enderEmit>
+    <IE>065835719</IE>
+    <CRT>1</CRT>
+</emit>
+<dest>
+    <CNPJ>${cnpjEstabelecimento}</CNPJ>
+    <xNome>M.L COMERCIO DE ROUPAS E ACESSORIOS EIRE</xNome>
+    <enderDest>
+        <xLgr>AV SANTOS DUMONT</xLgr>
+        <nro>3131</nro>
+        <xCpl>LJ 257 E 258</xCpl>
+        <xBairro>ALDEOTA</xBairro>
+        <cMun>2304400</cMun>
+        <xMun>FORTALEZA</xMun>
+        <UF>CE</UF>
+        <CEP>60150162</CEP>
+        <cPais>1058</cPais>
+        <xPais>BRASIL</xPais>
+    </enderDest>
+    <indIEDest>1</indIEDest>
+    <IE>067925847</IE>
+</dest>
+<det nItem="1">
+    <prod>
+        <cProd>7800010379362</cProd>
+        <cEAN>SEM GTIN</cEAN>
+        <xProd>VESTIDO EVELOPE COM JABOUR DUPLO</xProd>
+        <NCM>61044900</NCM>
+        <CFOP>5101</CFOP>
+        <uCom>UN</uCom>
+        <qCom>2.0000</qCom>
+        <vUnCom>195.0000000000</vUnCom>
+        <vProd>390.00</vProd>
+        <cEANTrib>SEM GTIN</cEANTrib>
+        <uTrib>UN</uTrib>
+        <qTrib>2.0000</qTrib>
+        <vUnTrib>195.0000000000</vUnTrib>
+        <vDesc>331.50</vDesc>
+        <indTot>1</indTot>
+    </prod>
+    <imposto>
+        <ICMS>
+            <ICMSSN102>
+                <orig>0</orig>
+                <CSOSN>102</CSOSN>
+            </ICMSSN102>
+        </ICMS>
+        <IPI>
+            <cEnq>999</cEnq>
+            <IPINT>
+                <CST>53</CST>
+            </IPINT>
+        </IPI>
+        <PIS>
+            <PISNT>
+                <CST>08</CST>
+            </PISNT>
+        </PIS>
+        <COFINS>
+            <COFINSNT>
+                <CST>08</CST>
+            </COFINSNT>
+        </COFINS>
+    </imposto>
+</det>
+<det nItem="2">
+    <prod>
+        <cProd>7800010379379</cProd>
+        <cEAN>SEM GTIN</cEAN>
+        <xProd>VESTIDO EVELOPE COM JABOUR DUPLO</xProd>
+        <NCM>61044900</NCM>
+        <CFOP>5101</CFOP>
+        <uCom>UN</uCom>
+        <qCom>2.0000</qCom>
+        <vUnCom>195.0000000000</vUnCom>
+        <vProd>390.00</vProd>
+        <cEANTrib>SEM GTIN</cEANTrib>
+        <uTrib>UN</uTrib>
+        <qTrib>2.0000</qTrib>
+        <vUnTrib>195.0000000000</vUnTrib>
+        <vDesc>331.50</vDesc>
+        <indTot>1</indTot>
+    </prod>
+    <imposto>
+        <ICMS>
+            <ICMSSN102>
+                <orig>0</orig>
+                <CSOSN>102</CSOSN>
+            </ICMSSN102>
+        </ICMS>
+        <IPI>
+            <cEnq>999</cEnq>
+            <IPINT>
+                <CST>53</CST>
+            </IPINT>
+        </IPI>
+        <PIS>
+            <PISNT>
+                <CST>08</CST>
+            </PISNT>
+        </PIS>
+        <COFINS>
+            <COFINSNT>
+                <CST>08</CST>
+            </COFINSNT>
+        </COFINS>
+    </imposto>
+</det>
+<total>
+    <ICMSTot>
+        <vBC>0.00</vBC>
+        <vICMS>0.00</vICMS>
+        <vICMSDeson>0.00</vICMSDeson>
+        <vFCP>0.00</vFCP>
+        <vBCST>0.00</vBCST>
+        <vST>0.00</vST>
+        <vFCPST>0.00</vFCPST>
+        <vFCPSTRet>0.00</vFCPSTRet>
+        <vProd>5413.10</vProd>
+        <vFrete>0.00</vFrete>
+        <vSeg>0.00</vSeg>
+        <vDesc>4601.14</vDesc>
+        <vII>0.00</vII>
+        <vIPI>0.00</vIPI>
+        <vIPIDevol>0.00</vIPIDevol>
+        <vPIS>0.00</vPIS>
+        <vCOFINS>0.00</vCOFINS>
+        <vOutro>0.00</vOutro>
+        <vNF>811.96</vNF>
+    </ICMSTot>
+</total>
+<transp>
+    <modFrete>0</modFrete>
+    <transporta>
+        <CNPJ>95591723003800</CNPJ>
+        <xNome>TNT MERCURIO CARGAS E ENC. EXPRESSAS S/A</xNome>
+        <IE>108254280116</IE>
+        <xEnder>AV MARGINAL DIREITA DO TIETE 2500</xEnder>
+        <xMun>SAO PAULO (SP)</xMun>
+        <UF>SP</UF>
+    </transporta>
+    <modFrete>9</modFrete>
+</transp>
+<pag>
+    <detPag>
+        <indPag>0</indPag>
+        <tPag>01</tPag>
+        <vPag>811.96</vPag>
+    </detPag>
+</pag>
+<infAdic>
+    <infCpl>NAO GERA CREDITO DE ICMS ART 20 DA LEI COMPLEMENTAR 123/2006.&amp;LT;BR&amp;GT;</infCpl>
+</infAdic>
+<infRespTec>
+    <CNPJ>23455355000170</CNPJ>
+    <xContato>Victor dos Santos Pereira</xContato>
+    <email>desenvolvimento@jetro.com.br</email>
+    <fone>8531338500</fone>
+</infRespTec>
+</infNFe>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+<SignedInfo>
+    <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"></CanonicalizationMethod>
+    <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"></SignatureMethod>
+    <Reference URI="#NFe23191212500300300341550110000012121900021215">
+        <Transforms>
+            <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"></Transform>
+            <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"></Transform>
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></DigestMethod>
+        <DigestValue>5VTcMf4LfKk6wOJJFJv4/NF18E0=</DigestValue>
+    </Reference>
+</SignedInfo>
+<SignatureValue>s+HzatxNazWIChziwLHS0Ti1ZjmjmgAxOPlkYBI3srBZSUVTIUVK+iaQ7Ly7PQy1I5u1dbJIXVgiyQ2BZcvK0Hu8FjRVVRebibz9AHPdy/mQ5u5xShTW8LrKzJK5GBqh0aKD6+L6KFWmMMUzZAYkPLE83zFq4Ou/33WjwLJ44yCdaMfOtEjFP915rX3ut5pMjhP2YOu/vTOORXriiHdOdyMutxRtrz7ejeg8Y5GI1pXqA6H9Zr/l1aagwi/46ND1VK6yRRga4j/TLw5vdc/qLc1gZkMmNKXpe8qhGqOU7mQHPiqaOM5Jum4zj1iOrf3WunQAXAiBNDHvhkACD7Z4iw==</SignatureValue>
+<KeyInfo>
+    <X509Data>
+        <X509Certificate>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</X509Certificate>
+    </X509Data>
+</KeyInfo>
+</Signature>
+</NFe>`;
+
+            const bb = new Blob([XMLString], {type: 'text/plain'});
+            const xmlUrl = window.URL.createObjectURL(bb);
+
+            download(xmlUrl, numeroNF+'.xml');
+
+            // $.post(`http://192.168.1.155:3001/gerar?numeroNF=${numeroNF}&cnpjEstabelecimento=${cnpjEstabelecimento}&cnpjFornecedor=${cnpjFornecedor}`, {
+            //     // numeroNF,
+            //     // cnpjEstabelecimento,
+            //     // cnpjFornecedor,
+            // }, (res) => {
+            //     if(res.status === 200) {
+            //         download(res.data.urlXml);
+            //     }
+            // });
+        }
+
+        function download(urlXml, fileName) {
+            var pom = document.createElement('a');
+
+            pom.setAttribute('href', urlXml);
+            pom.setAttribute('download', fileName);
+
+            pom.dataset.downloadurl = ['text/plain', pom.download, pom.href].join(':');
+            pom.draggable = true; 
+            pom.classList.add('dragout');
+
+            pom.click();
+        }
+    </script>
+</body>
+</html>
