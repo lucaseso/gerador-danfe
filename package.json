@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "prod": "npm i http-server -g && http-server --proxy http://localhost:9090? -p 9090",
+    "prod": "npm i http-server -g && http-server -p 9090",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Lucas Oliveira",
